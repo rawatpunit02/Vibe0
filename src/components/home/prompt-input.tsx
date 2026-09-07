@@ -18,23 +18,24 @@ import {
     getRandomPromptTemplate,
     promptTemplateCategories,
 } from "@/components/home/prompt-templates";
-// import { useCreateProject } from "@/features/projects/hooks/projects";
+import { useCreateProject } from "@/features/projects/hooks/projects";
 
 export function PromptInput() {
     const [prompt, setPrompt] = useState("");
     const router = useRouter();
-    // const { mutate: createProject, isPending } = useCreateProject();
-    let isPending = false
-    // function handleSubmit() {
-    //     createProject(prompt, {
-    //         onSuccess: (project) => {
-    //             router.push(`/projects/${project.id}`);
-    //         },
-    //         onError: (error) => {
-    //             toast.error(error.message);
-    //         }
-    //     })
-    // }
+    const { mutate: createProject, isPending } = useCreateProject();
+
+    function handleSubmit() {
+        if (!prompt.trim() || isPending) return;
+        createProject(prompt, {
+            onSuccess: (project) => {
+                router.push(`/projects/${project.id}`)
+            },
+            onError: (error) => {
+                toast.error(error.message)
+            }
+        })
+    }
 
     /**
      * Replace the textarea contents with a chosen template prompt.
@@ -65,7 +66,7 @@ export function PromptInput() {
                     onKeyDown={(event) => {
                         if (event.key === "Enter" && !event.shiftKey) {
                             event.preventDefault();
-                            // handleSubmit();
+                            handleSubmit();
                         }
                     }}
                 />
@@ -80,7 +81,7 @@ export function PromptInput() {
                     <InputGroupButton
                         size="icon-sm"
                         variant="default"
-                        // onClick={handleSubmit}
+                        onClick={handleSubmit}
                         disabled={!prompt.trim() || isPending}
                         aria-label="Submit prompt"
                     >

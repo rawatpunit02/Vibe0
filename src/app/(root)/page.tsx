@@ -2,7 +2,7 @@ import { auth } from "@clerk/nextjs/server";
 import { GlassNavbar } from "@/components/home/glass-navbar";
 import { HomeBackground } from "@/components/home/home-background";
 import { PromptInput } from "@/components/home/prompt-input";
-
+import { ProjectGrid } from "@/features/projects/components/project-grid";
 export default async function Home() {
   await auth.protect();
 
@@ -23,6 +23,9 @@ export default async function Home() {
 
         <div className="w-full">
           <PromptInput />
+        </div>
+        <div>
+          <ProjectGrid />
         </div>
       </main>
     </div>
