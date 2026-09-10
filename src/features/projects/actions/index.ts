@@ -33,7 +33,16 @@ export const createProject = async (value: string) => {
 
             }
         })
-        //TODO send project to inngest
+        await inngest.send({
+            name: "code-agent/run",
+            data: {
+                value,
+                projectId: project.id,
+
+            }
+        })
+
+
         return project;
     } catch (error) {
         console.log("Error in project create ", error);
